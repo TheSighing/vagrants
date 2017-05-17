@@ -47,4 +47,13 @@ class apache {
       File["/etc/apache2/sites-available/vagrant_webroot"]
     ],
   }
+
+  # Setting up the document root
+  file { ['/var/www', '/var/www/test'] :
+    ensure => directory,
+  }
+
+  file { '/var/www/test/index.php' :
+    content => '<?php echo \'<h1>Hello world!</h1>\' ?>',
+  }
 }
