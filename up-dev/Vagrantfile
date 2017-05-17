@@ -1,30 +1,76 @@
+# TO move to multi node configuration of web sites after creatign the first web node for calendar
+# nodes_config = (JSON.parse(File.read("nodes.json")))['nodes']
+# nodes_config.each do |node|
+#     node_name   = node[0] # name of node
+#     node_values = node[1] # content of node
+#     config.vm.define node_name do |config|
+#       # configures all forwarding ports in JSON array
+#       ports = node_values['ports']
+#       ports.each do |port|
+#         config.vm.network :forwarded_port,
+#           host:  port[':host'],
+#           guest: port[':guest'],
+#           id:    port[':id']
+#       end
+#       config.vm.hostname = node_name
+#       config.vm.network :private_network, ip: node_values[':ip']
+#       config.vm.provider :virtualbox do |vb|
+#         vb.customize ["modifyvm", :id, "--memory", node_values[':memory']]
+#         vb.customize ["modifyvm", :id, "--name", node_name]
+#       end
+#       config.vm.provision :shell, :path => node_values[':bootstrap']
+#     end
+#   end
+
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
-  # config.vm.box = "hashicorp/precise64"
-  # config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.define "web" do |web|
+    web.vm.box = "ubuntu/trusty64"
+    web.vm.hostname = 'web'
 
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--cpus", "2"]
-    v.customize ["modifyvm", :id, "--memory", "1280"]
+    web.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--cpus", "2"]
+      v.customize ["modifyvm", :id, "--memory", "1280"]
+      v.customize ["modifyvm", :id, "--name", "web"]
+    end
+
+    web.vm.synced_folder "webroot/", "/vagrant/webroot", :owner => "www-data", :group => "www-data"
+    web.vm.synced_folder "apps/calendar", "/var/www/calendar", :owner => "www-data", :group => "www-data", :mount_option => ["dmode=775", "fmode=644"]
+
+    # web.vm.network :private_network, ip: "192.168.56.101"
+
+    # Forward guest port 80 to host port 8888 and name mapping
+    # web.vm.network :forwarded_port, guest: 80, host: 8080
+    config.vm.network :private_network, ip: "192.168.33.10"
+
+    # config.vm.provision "shell", path: "apt-update.sh"
+    # config.vm.provision "shell", path: "install-puppet-modules.sh"
+
+    web.vm.provision :puppet do |puppet|
+      # puppet.manifests_path = "puppet/manifests"
+      # puppet.module_path = "puppet/modules"
+      puppet.manifests_path = "manifests"
+      puppet.module_path = "modules"
+      puppet.manifest_file = "default.pp"
+      puppet.options = ['--verbose']
+    end
   end
 
-  config.vm.synced_folder "webroot/", "/vagrant/webroot", :owner => "www-data"
+  # config.vm.define "db" do |db|
+  #   db.vm.box = "ubuntu/trusty64"
+  #   db.vm.hostname = 'db'
 
-  # Forward guest port 80 to host port 8888 and name mapping
-  config.vm.network :forwarded_port, guest: 80, host: 8888
+  #   # db.vm.network :private_network, ip: "192.168.56.102"
+  #   db.vm.network :forwarded_port, guest: 80, host: 8888
 
-  # config.vm.provision "shell", path: "apt-update.sh"
-  # config.vm.provision "shell", path: "install-puppet-modules.sh"
-
-  config.vm.provision :puppet do |puppet|
-    # puppet.manifests_path = "puppet/manifests"
-    # puppet.module_path = "puppet/modules"
-    puppet.manifests_path = "manifests"
-    puppet.module_path = "modules"
-    puppet.manifest_file = "default.pp"
-    puppet.options = ['--verbose']
-  end
+  #   db.vm.provider :virtualbox do |v|
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--memory", 512]
+  #     v.customize ["modifyvm", :id, "--name", "db"]
+  #   end
+  # end
 
 end
+
