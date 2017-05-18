@@ -7,6 +7,7 @@ Exec {
 # node 'www1.example.com' {
   include bootstrap
   include tools
+  include puppet
   include apache
   include php
   include composer

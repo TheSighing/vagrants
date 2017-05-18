@@ -53,8 +53,4 @@ class apache {
     mode => '0755',
     ensure => directory,
   }
-
-  # file { '/var/www/test/index.php' :
-  #   content => '<?php echo \'<h1>Hello world!</h1>\' ?>',
-  # }
 }
