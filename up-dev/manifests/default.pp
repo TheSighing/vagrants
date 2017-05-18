@@ -3,35 +3,29 @@ Exec {
   path => ["/usr/bin", "/bin", "/usr/sbin", "/sbin", "/usr/local/bin", "/usr/local/sbin"]
 }
 
-# Node for Calendar
-# node 'www1.example.com' {
-  include bootstrap
-  include tools
-  include puppet
-  include apache
-  include php
-  include composer
-  include laravel
-  include mysql
+$servername = 'example.com'
 
-# }
+#SHARED
 
-# Node for UP
-# node 'db1.example.com' {
-#   include bootstrap
-#   include tools
-#   include apache
-#   include php
-#   include composer
-#   include mysql
-# }
+include bootstrap
+include tools
+include puppet
+include apache
+include apache::vhosts
+include php
+include composer
+include laravel
+include mysql
 
-# Node for ABR
-# node 'db1.example.com' {
-#   include bootstrap
-#   include tools
-#   include apache
-#   include php
-#   include composer
-#   include mysql
-# }
+#UBUNTU SETUP
+  node 'ubuntuhost.example.com' {
+
+  }
+
+#CENTOS SETUP
+  node 'centoshost.example.com' {
+
+  }
+
+#WINDOWS
+
