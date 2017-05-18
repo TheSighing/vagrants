@@ -50,6 +50,7 @@ class apache {
 
   # Setting up the document root
   file { ['/var/www', '/var/www/test'] :
+    mode => '0755',
     ensure => directory,
   }
 
