@@ -1,0 +1,21 @@
+[submodule "lamp-dev/modules/puppet"]
+	path = lamp-dev/modules/puppet
+	url = https://github.com/TheSighing/puppet
+[submodule "lamp-dev/modules/apache"]
+	path = lamp-dev/modules/apache
+	url = https://github.com/TheSighing/apache
+[submodule "lamp-dev/modules/tools"]
+	path = lamp-dev/modules/tools
+	url = https://github.com/TheSighing/tools
+[submodule "lamp-dev/modules/php"]
+	path = lamp-dev/modules/php
+	url = https://github.com/TheSighing/php
+[submodule "lamp-dev/modules/mysql"]
+	path = lamp-dev/modules/mysql
+	url = https://github.com/TheSighing/mysql
+[submodule "lamp-dev/modules/composer"]
+	path = lamp-dev/modules/composer
+	url = https://github.com/TheSighing/composer
+[submodule "lamp-dev/modules/bootstrap"]
+	path = lamp-dev/modules/bootstrap
+	url = https://github.com/TheSighing/bootstrap
