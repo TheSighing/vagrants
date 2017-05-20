@@ -11,7 +11,7 @@ Exec {
   include apache
   include php
   include composer
-  include laravel
+  # include laravel
   include mysql
 
 # }

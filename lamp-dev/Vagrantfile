@@ -34,6 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--cpus", "2"]
       v.customize ["modifyvm", :id, "--memory", "1280"]
       v.customize ["modifyvm", :id, "--name", "web"]
+
     end
 
     web.vm.synced_folder "~/r/", "/var/www/", :owner => "www-data", :group => "www-data", :mount_option => ["dmode=775", "fmode=644"]
